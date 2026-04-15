@@ -3,6 +3,9 @@
  * API Batch File Verification Endpoint
  * POST /api/v1/verify - Check if multiple files exist
  * 
+ * Optimized for large-scale synchronization operations.
+ * Supports up to 2 million files per request with automatic database query chunking.
+ * 
  * Request body (JSON):
  * {
  *   "file_ids": ["abc123def456", "xyz789ghi012", ...]
@@ -21,6 +24,11 @@
  *     "missing": 1
  *   }
  * }
+ * 
+ * Performance:
+ * - Memory: Allocates up to 2GB for very large batches
+ * - Timeout: 5 minutes max execution time
+ * - Database: Queries in chunks of 10,000 IDs for optimal performance
  */
 
 // Set CORS headers FIRST
@@ -66,6 +74,10 @@ try {
         exit;
     }
 
+    // Increase limits for large batch operations
+    ini_set('memory_limit', '2048M');  // 2GB memory for large batches
+    set_time_limit(300);  // 5 minutes max execution time
+
     // Validate request method
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         jsonError('Method not allowed. Use POST.', 405);
@@ -86,8 +98,8 @@ try {
 
     $fileIds = $data['file_ids'];
     
-    // Limit batch size to prevent abuse
-    $maxBatchSize = 1000;
+    // Limit batch size to prevent abuse (increased for large-scale sync operations)
+    $maxBatchSize = 2000000;  // 2 million files max per request
     if (count($fileIds) > $maxBatchSize) {
         jsonError("Too many file IDs. Maximum batch size is {$maxBatchSize}.");
     }
@@ -112,16 +124,27 @@ try {
         jsonError('No valid file IDs provided. File IDs must be 12 character hexadecimal strings.');
     }
 
-    // Query database for all files at once
+    // Query database in chunks for efficiency with large datasets
     $db = getDB();
-    $placeholders = str_repeat('?,', count($sanitizedIds) - 1) . '?';
-    $sql = "SELECT id, filename, size, upload_date 
-            FROM files 
-            WHERE id IN ($placeholders)";
+    $chunkSize = 10000;  // Process 10k IDs at a time to avoid SQL limits
+    $foundFiles = [];
     
-    $stmt = $db->prepare($sql);
-    $stmt->execute($sanitizedIds);
-    $foundFiles = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    // Split IDs into chunks
+    $chunks = array_chunk($sanitizedIds, $chunkSize);
+    
+    foreach ($chunks as $chunk) {
+        $placeholders = str_repeat('?,', count($chunk) - 1) . '?';
+        $sql = "SELECT id, filename, size, upload_date 
+                FROM files 
+                WHERE id IN ($placeholders)";
+        
+        $stmt = $db->prepare($sql);
+        $stmt->execute($chunk);
+        $chunkResults = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        // Merge chunk results
+        $foundFiles = array_merge($foundFiles, $chunkResults);
+    }
 
     // Build results array
     $results = [];

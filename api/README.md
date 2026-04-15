@@ -142,10 +142,11 @@ Content-Type: application/json
 ```
 
 **Features:**
-- Check up to 1000 files in a single request
+- Check up to 2 million files in a single request
 - Returns detailed info for existing files
 - Perfect for sync operations and cleanup tasks
 - Much faster than checking files individually
+- Optimized database queries with automatic chunking
 
 ## 💻 Usage Examples
 
