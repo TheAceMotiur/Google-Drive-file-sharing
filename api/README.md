@@ -96,6 +96,57 @@ X-API-Key: your_api_key_here
 }
 ```
 
+### POST /api/v1/verify.php
+Batch verify if multiple files exist (useful for synchronization).
+
+**Headers:**
+```
+X-API-Key: your_api_key_here
+Content-Type: application/json
+```
+
+**Request Body:**
+```json
+{
+  "file_ids": ["a1b2c3d4e5f6", "xyz789ghi012", "abc123def456"]
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "results": {
+    "a1b2c3d4e5f6": {
+      "exists": true,
+      "filename": "document.pdf",
+      "size": 1048576,
+      "upload_date": "2026-03-03 10:30:00"
+    },
+    "xyz789ghi012": {
+      "exists": false
+    },
+    "abc123def456": {
+      "exists": true,
+      "filename": "image.jpg",
+      "size": 524288,
+      "upload_date": "2026-03-02 14:20:00"
+    }
+  },
+  "summary": {
+    "total_checked": 3,
+    "exists": 2,
+    "missing": 1
+  }
+}
+```
+
+**Features:**
+- Check up to 1000 files in a single request
+- Returns detailed info for existing files
+- Perfect for sync operations and cleanup tasks
+- Much faster than checking files individually
+
 ## 💻 Usage Examples
 
 ### JavaScript / Node.js
