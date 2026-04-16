@@ -203,8 +203,28 @@ $mimeType    = $found['mime'] ?? 'application/octet-stream';
 
 // Determine Content-Disposition based on file type and request
 $forceDownload = isset($_GET['download']);
-$isImageMime = strpos($mimeType, 'image/') === 0;
-$disposition = ($isImageMime && !$forceDownload) ? 'inline' : 'attachment';
+
+// File types that should be displayed inline (in browser)
+$inlineMimeTypes = [
+    'image/',       // All images
+    'video/',       // All videos
+    'audio/',       // All audio
+    'application/pdf',
+    'text/',        // All text files
+    'application/json',
+    'application/xml'
+];
+
+// Check if mime type should be inline
+$shouldBeInline = false;
+foreach ($inlineMimeTypes as $prefix) {
+    if (strpos($mimeType, $prefix) === 0 || $mimeType === $prefix) {
+        $shouldBeInline = true;
+        break;
+    }
+}
+
+$disposition = ($shouldBeInline && !$forceDownload) ? 'inline' : 'attachment';
 
 // Set headers BEFORE any output
 header('Content-Type: ' . $mimeType);
