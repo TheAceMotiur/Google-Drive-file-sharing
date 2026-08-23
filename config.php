@@ -21,6 +21,17 @@ function getSiteUrl(): string {
 }
 define('SITE_URL', getSiteUrl());
 
+// ═══════════════════════════════════════════════════════════════════════════════
+// TEMPORARY DEV-ONLY SSL BYPASS (Google Drive API calls in drive_api.php)
+// ═══════════════════════════════════════════════════════════════════════════════
+// Only disables certificate verification when running on a local/.local dev
+// host — NEVER activates on a real domain. Remove once the local CA bundle
+// (curl.cainfo / openssl.cafile in php.ini) is fixed. Traffic is still
+// encrypted (TLS); only the certificate chain check is skipped.
+$__driveApiHost = $_SERVER['HTTP_HOST'] ?? '';
+define('DRIVE_API_INSECURE_SSL_DEV', (bool)preg_match('/(^|\.)(localhost|127\.0\.0\.1|.*\.local)$/i', $__driveApiHost));
+unset($__driveApiHost);
+
 // Max upload size — Herd/Nginx: set via php.ini or ini_set() (see upload.php)
 define('MAX_FILE_SIZE_MB', 5120); // 5 GB
 define('MAX_FILE_SIZE_BYTES', MAX_FILE_SIZE_MB * 1024 * 1024);

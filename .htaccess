@@ -1,0 +1,31 @@
+# Local Apache equivalent of nginx.conf's rewrite rules
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Path-based download URLs: /download/ID -> /download.php?id=ID
+    RewriteRule ^download/([a-zA-Z0-9]+)$ download.php?id=$1 [L,QSA]
+
+    # Path-based stream URLs: /stream/ID -> /stream.php?id=ID
+    RewriteRule ^stream/([a-zA-Z0-9]+)$ stream.php?id=$1 [L,QSA]
+
+    # Block direct access to sensitive PHP files
+    RewriteRule ^(config|drive_api|configuration|database|api_auth)\.php$ - [F,L]
+
+    # Extensionless PHP support (e.g. /upload -> upload.php)
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME}.php -f
+    RewriteRule ^(.*)$ $1.php [L,QSA]
+</IfModule>
+
+# Block direct web access to the database folder (see database/.htaccess)
+
+# Increase upload limits
+<IfModule mod_php.c>
+    php_value upload_max_filesize 5120M
+    php_value post_max_size 5200M
+    php_value max_execution_time 7200
+    php_value max_input_time 7200
+    php_value memory_limit 768M
+</IfModule>

@@ -40,7 +40,12 @@ class DriveAPI {
         $data = json_decode($response['body'], true);
 
         if (empty($data['access_token'])) {
-            $msg = $data['error_description'] ?? $data['error'] ?? 'Unknown error';
+            if ((int)$response['http_code'] === 0) {
+                // curl never reached Google at all (DNS/TLS/firewall/no outbound internet)
+                $msg = $response['curl_error'] !== '' ? $response['curl_error'] : 'Could not connect to oauth2.googleapis.com (network/DNS/TLS issue on the server)';
+            } else {
+                $msg = $data['error_description'] ?? $data['error'] ?? 'Unknown error';
+            }
             // Include raw body so the developer can see what Google actually returned
             throw new RuntimeException("Google OAuth2 auth failed: $msg | HTTP {$response['http_code']} | Raw: {$response['body']}");
         }
@@ -117,7 +122,7 @@ class DriveAPI {
                     'Content-Length: ' . $chunkLen,
                 ],
                 CURLOPT_POSTFIELDS     => $chunk,
-                CURLOPT_SSL_VERIFYPEER => true,
+                CURLOPT_SSL_VERIFYPEER => self::sslVerifyPeer(),
             ]);
             $result   = curl_exec($ch);
             $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -180,7 +185,7 @@ class DriveAPI {
             CURLOPT_CUSTOMREQUEST  => 'DELETE',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HTTPHEADER     => ['Authorization: Bearer ' . $this->accessToken],
-            CURLOPT_SSL_VERIFYPEER => true,
+            CURLOPT_SSL_VERIFYPEER => self::sslVerifyPeer(),
         ]);
         curl_exec($ch);
         $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -203,7 +208,7 @@ class DriveAPI {
         curl_setopt_array($ch, [
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HTTPHEADER     => ['Authorization: Bearer ' . $this->accessToken],
-            CURLOPT_SSL_VERIFYPEER => true,
+            CURLOPT_SSL_VERIFYPEER => self::sslVerifyPeer(),
         ]);
         $body = curl_exec($ch);
 
@@ -221,6 +226,11 @@ class DriveAPI {
     // Helpers
     // -----------------------------------------------------------------------
 
+    /** TEMPORARY: cert verification is skipped only when DRIVE_API_INSECURE_SSL_DEV (local hosts) is on. */
+    private static function sslVerifyPeer(): bool {
+        return !(defined('DRIVE_API_INSECURE_SSL_DEV') && DRIVE_API_INSECURE_SSL_DEV === true);
+    }
+
     private function curlPost(string $url, string $body, array $headers = [], bool $returnHeaders = false): array {
         $ch = curl_init($url);
         curl_setopt_array($ch, [
@@ -228,7 +238,9 @@ class DriveAPI {
             CURLOPT_POSTFIELDS     => $body,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HTTPHEADER     => $headers,
-            CURLOPT_SSL_VERIFYPEER => true,
+            CURLOPT_SSL_VERIFYPEER => self::sslVerifyPeer(),
+            CURLOPT_CONNECTTIMEOUT => 15,
+            CURLOPT_TIMEOUT        => 30,
         ]);
 
         if ($returnHeaders) {
@@ -237,16 +249,23 @@ class DriveAPI {
 
         $response = curl_exec($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $headerSize = $returnHeaders ? curl_getinfo($ch, CURLINFO_HEADER_SIZE) : 0;
+        $curlError = curl_error($ch);
+        curl_close($ch);
+
+        if ($response === false) {
+            $response = '';
+        }
 
         if ($returnHeaders) {
-            $headerSize = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
             return [
-                'http_code' => $httpCode,
-                'headers'   => substr($response, 0, $headerSize),
-                'body'      => substr($response, $headerSize),
+                'http_code'  => $httpCode,
+                'headers'    => substr($response, 0, $headerSize),
+                'body'       => substr($response, $headerSize),
+                'curl_error' => $curlError,
             ];
         }
-        return ['http_code' => $httpCode, 'body' => $response];
+        return ['http_code' => $httpCode, 'body' => $response, 'curl_error' => $curlError];
     }
 
     public function getAccountId(): string {
@@ -275,6 +294,7 @@ class DriveAPI {
         curl_setopt($ch, CURLOPT_FILE, $fp);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_TIMEOUT, 0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, self::sslVerifyPeer());
         curl_exec($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         fclose($fp);

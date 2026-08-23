@@ -18,5 +18,5 @@ jobs:
           --exclude='.git/' \
           --exclude='.github/' \
           --exclude='configuration.php' \
-          ./ onenetly@158.69.60.81:/home/onenetly/htdocs/onenetly.com/
+          ./ freenetly@185.143.228.10:/home/freenetly/public_html
 
