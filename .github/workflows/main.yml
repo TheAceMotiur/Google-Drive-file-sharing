@@ -13,7 +13,7 @@ jobs:
       with:
         server: server.onenetly.com
         username: freenetly
-        password: AmiMotiur27@
+        password: 1s48-SIu3sWR*p
         server-dir: /public_html/
         exclude: |
           **/.git*
