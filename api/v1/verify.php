@@ -182,9 +182,9 @@ try {
     ]);
 
 } catch (PDOException $e) {
-    error_log("OneNetly API verify error: " . $e->getMessage());
+    error_log("FreeNetly API verify error: " . $e->getMessage());
     jsonError('Database error occurred', 500);
 } catch (Exception $e) {
-    error_log("OneNetly API verify error: " . $e->getMessage());
+    error_log("FreeNetly API verify error: " . $e->getMessage());
     jsonError('An error occurred: ' . $e->getMessage(), 500);
 }

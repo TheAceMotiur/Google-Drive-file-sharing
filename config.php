@@ -5,14 +5,14 @@
  * Add multiple accounts to DRIVE_ACCOUNTS for round-robin storage spreading.
  */
 
-define('SITE_NAME', 'OneNetly');
-define('SITE_EMAIL', 'onenetly@gmail.com');
+define('SITE_NAME', 'FreeNetly');
+define('SITE_EMAIL', 'freenetly@gmail.com');
 
 // Auto-detect site URL from server variables (defaults to production URL)
 function getSiteUrl(): string {
-    // Use onenetly.com in production, or auto-detect for local development
+    // Use freenetly.com in production, or auto-detect for local development
     if (!empty($_SERVER['HTTP_HOST']) && strpos($_SERVER['HTTP_HOST'], 'localhost') === false && strpos($_SERVER['HTTP_HOST'], '127.0.0.1') === false) {
-        return 'https://onenetly.com';
+        return 'https://freenetly.com';
     }
     $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || 
                 ($_SERVER['SERVER_PORT'] ?? 80) == 443 ? 'https' : 'http';

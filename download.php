@@ -47,7 +47,7 @@ function daysUntilExpiry(array $record): int {
 }
 
 function renderErrorPage(string $msg): void {
-    $site = defined('SITE_NAME') ? SITE_NAME : 'OneNetly';
+    $site = defined('SITE_NAME') ? SITE_NAME : 'FreeNetly';
     $home = defined('SITE_URL')  ? SITE_URL  : '/';
     echo <<<HTML
 <!DOCTYPE html>

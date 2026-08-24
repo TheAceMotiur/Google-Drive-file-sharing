@@ -1,4 +1,4 @@
-# OneNetly API
+# FreeNetly API
 
 Complete API implementation for programmatic file uploads and management.
 
@@ -35,7 +35,7 @@ location /api/v1 {
 
 ### 3. Access Admin Panel
 
-Visit: `https://onenetly.com/api.php`
+Visit: `https://freenetly.com/api.php`
 
 Login with admin credentials from `config.php`:
 - Username: (defined in ADMIN_USERNAME)
@@ -65,7 +65,7 @@ file: (binary file data)
   "filename": "document.pdf",
   "size": 1048576,
   "mime_type": "application/pdf",
-  "download_url": "https://onenetly.com/download/a1b2c3d4e5f6",
+  "download_url": "https://freenetly.com/download/a1b2c3d4e5f6",
   "uploaded_at": "2026-03-03T10:30:00+00:00",
   "expires_in_days": 90
 }
@@ -88,7 +88,7 @@ X-API-Key: your_api_key_here
   "size": 1048576,
   "size_human": "1.00 MB",
   "mime_type": "application/pdf",
-  "download_url": "https://onenetly.com/download/a1b2c3d4e5f6",
+  "download_url": "https://freenetly.com/download/a1b2c3d4e5f6",
   "uploaded_at": "2026-03-03 10:30:00",
   "download_count": 5,
   "last_downloaded_at": "2026-03-03 15:45:00",
@@ -156,7 +156,7 @@ Content-Type: application/json
 const formData = new FormData();
 formData.append('file', fileBlob);
 
-const response = await fetch('https://onenetly.com/api/v1/upload.php', {
+const response = await fetch('https://freenetly.com/api/v1/upload.php', {
   method: 'POST',
   headers: {
     'X-API-Key': 'your_api_key_here'
@@ -172,7 +172,7 @@ console.log('Download URL:', data.download_url);
 
 ```php
 $ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, 'https://onenetly.com/api/v1/upload.php');
+curl_setopt($ch, CURLOPT_URL, 'https://freenetly.com/api/v1/upload.php');
 curl_setopt($ch, CURLOPT_POST, true);
 curl_setopt($ch, CURLOPT_HTTPHEADER, ['X-API-Key: your_api_key_here']);
 curl_setopt($ch, CURLOPT_POSTFIELDS, ['file' => new CURLFile($filePath)]);
@@ -193,7 +193,7 @@ headers = {'X-API-Key': 'your_api_key_here'}
 files = {'file': open('/path/to/file.pdf', 'rb')}
 
 response = requests.post(
-    'https://onenetly.com/api/v1/upload.php',
+    'https://freenetly.com/api/v1/upload.php',
     headers=headers,
     files=files
 )
@@ -266,7 +266,7 @@ Create a simple upload form on your child website:
         formData.append('file', file);
         
         try {
-            const response = await fetch('https://onenetly.com/api/v1/upload.php', {
+            const response = await fetch('https://freenetly.com/api/v1/upload.php', {
                 method: 'POST',
                 headers: {
                     'X-API-Key': 'YOUR_API_KEY_HERE'
@@ -326,4 +326,4 @@ For issues or questions:
 
 ---
 
-**Powered by OneNetly © 2026**
+**Powered by FreeNetly © 2026**

@@ -1,4 +1,4 @@
-# robots.txt for OneNetly - Anonymous File Sharing Service
+# robots.txt for FreeNetly - Anonymous File Sharing Service
 User-agent: *
 Allow: /
 Disallow: /admin.php

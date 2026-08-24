@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OneNetly File Upload - Integration Example</title>
+    <title>FreeNetly File Upload - Integration Example</title>
     <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js"></script>
     <style>
         * {
@@ -248,13 +248,13 @@
     <div id="app">
         <div class="upload-container">
             <h1>📦 File Upload</h1>
-            <p class="subtitle">Powered by OneNetly API</p>
+            <p class="subtitle">Powered by FreeNetly API</p>
 
             <!-- API Key Warning -->
             <div class="api-key-warning" v-if="!apiKey">
                 <strong>⚠️ Configuration Required</strong>
                 Please set your API key in the JavaScript code below (line ~250).
-                Get your API key from: <a href="https://onenetly.com/api.php" target="_blank">onenetly.com/api</a>
+                Get your API key from: <a href="https://freenetly.com/api.php" target="_blank">freenetly.com/api</a>
             </div>
 
             <!-- Upload Area -->
@@ -300,7 +300,7 @@
                     </div>
                 </div>
                 <div style="text-align: center; color: #666;">
-                    Uploading to OneNetly...
+                    Uploading to FreeNetly...
                 </div>
             </div>
 
@@ -344,11 +344,11 @@
             data() {
                 return {
                     // ⚠️ SET YOUR API KEY HERE
-                    // Get it from: https://onenetly.com/api.php
+                    // Get it from: https://freenetly.com/api.php
                     apiKey: '', // Example: 'ok_1234567890abcdef...'
                     
                     // API Configuration
-                    apiEndpoint: 'https://onenetly.com/api/v1/upload.php',
+                    apiEndpoint: 'https://freenetly.com/api/v1/upload.php',
                     
                     // Upload State
                     selectedFile: null,

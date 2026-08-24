@@ -1,4 +1,4 @@
-# 🚀 OneNetly API - Quick Setup Guide
+# 🚀 FreeNetly API - Quick Setup Guide
 
 ## Step 1: Update Nginx Configuration
 
@@ -31,13 +31,13 @@ The API tables will be created automatically when you first access the admin pan
 
 Or manually create tables:
 ```bash
-cd /path/to/OneNetly
+cd /path/to/FreeNetly
 mysql -u your_user -p your_database < database/04_api_keys.sql
 ```
 
 ## Step 3: Access Admin Panel
 
-1. Open your browser and go to: **https://onenetly.com/api.php**
+1. Open your browser and go to: **https://freenetly.com/api.php**
 
 2. Login with your admin credentials (from `config.php`):
    - Username: `TheAceMotiur`
@@ -65,12 +65,12 @@ mysql -u your_user -p your_database < database/04_api_keys.sql
 
 ```bash
 # Upload a file
-curl -X POST https://onenetly.com/api/v1/upload.php \
+curl -X POST https://freenetly.com/api/v1/upload.php \
   -H "X-API-Key: YOUR_API_KEY_HERE" \
   -F "file=@/path/to/your/file.pdf"
 
 # Get file info
-curl -X GET https://onenetly.com/api/v1/file.php?id=FILE_ID_HERE \
+curl -X GET https://freenetly.com/api/v1/file.php?id=FILE_ID_HERE \
   -H "X-API-Key: YOUR_API_KEY_HERE"
 ```
 
@@ -80,7 +80,7 @@ curl -X GET https://onenetly.com/api/v1/file.php?id=FILE_ID_HERE \
 const formData = new FormData();
 formData.append('file', yourFileBlob);
 
-const response = await fetch('https://onenetly.com/api/v1/upload.php', {
+const response = await fetch('https://freenetly.com/api/v1/upload.php', {
   method: 'POST',
   headers: {
     'X-API-Key': 'YOUR_API_KEY_HERE'
@@ -104,7 +104,7 @@ Use the `api/example.html` as a template for your own website:
 ## 📁 File Structure
 
 ```
-OneNetly/
+FreeNetly/
 ├── api/
 │   ├── v1/
 │   │   ├── upload.php      # Upload endpoint
@@ -167,7 +167,7 @@ OneNetly/
 
 ## 📚 Documentation
 
-Full API documentation is available at: **https://onenetly.com/api.php**
+Full API documentation is available at: **https://freenetly.com/api.php**
 
 The documentation includes:
 - ✅ API endpoint details
@@ -178,10 +178,10 @@ The documentation includes:
 
 ## 🎉 You're All Set!
 
-Your OneNetly API is now ready to use. Start integrating file uploads into your applications!
+Your FreeNetly API is now ready to use. Start integrating file uploads into your applications!
 
 For support or questions, check the documentation or review the code comments.
 
 ---
 
-**Powered by OneNetly © 2026**
+**Powered by FreeNetly © 2026**

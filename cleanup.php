@@ -11,7 +11,7 @@
  * retried on every subsequent cleanup run — no orphans are ever left on Drive.
  *
  * Triggered automatically (~5% of download page visits) or manually:
- *   https://onenetly.com/cleanup.php?token=YOUR_CLEANUP_TOKEN
+ *   https://freenetly.com/cleanup.php?token=YOUR_CLEANUP_TOKEN
  *
  * Cron (daily at 2am):
  *   0 2 * * * curl -s "https://yourdomain.com/cleanup.php?token=YOUR_TOKEN" > /dev/null

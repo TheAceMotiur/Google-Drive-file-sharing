@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/config.php';
-$siteName = defined('SITE_NAME') ? SITE_NAME : 'OneNetly';
+$siteName = defined('SITE_NAME') ? SITE_NAME : 'FreeNetly';
 
 // Set page variables for header
 $pageTitle = 'About ' . $siteName . ' - Anonymous File Sharing Service';

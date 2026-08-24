@@ -237,7 +237,7 @@ function generateAPIKey(string $name, string $websiteUrl = '', int $rateLimit = 
         $db = getDB();
         
         // Generate unique API key
-        $apiKey = 'ok_' . bin2hex(random_bytes(24)); // ok_ prefix for OneNetly Key
+        $apiKey = 'ok_' . bin2hex(random_bytes(24)); // ok_ prefix for FreeNetly Key
         $apiSecret = bin2hex(random_bytes(32));
         
         $stmt = $db->prepare('

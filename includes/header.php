@@ -2,7 +2,7 @@
 if (!defined('SITE_NAME')) {
     require_once __DIR__ . '/../config.php';
 }
-$siteName = defined('SITE_NAME') ? SITE_NAME : 'OneNetly';
+$siteName = defined('SITE_NAME') ? SITE_NAME : 'FreeNetly';
 $siteUrl = defined('SITE_URL') ? SITE_URL : '/';
 ?>
 <!DOCTYPE html>

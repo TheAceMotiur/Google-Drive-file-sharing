@@ -1,4 +1,4 @@
-# OneNetly API - Apache Configuration
+# FreeNetly API - Apache Configuration
 # Place this in /api/.htaccess
 
 <IfModule mod_rewrite.c>

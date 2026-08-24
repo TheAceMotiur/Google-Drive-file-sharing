@@ -34,7 +34,7 @@ Example:
 <?php
 // Seed initial data
 $stmt = $db->prepare("INSERT IGNORE INTO settings (key, value) VALUES (?, ?)");
-$stmt->execute(['app_name', 'OneNetly']);
+$stmt->execute(['app_name', 'FreeNetly']);
 ?>
 ```
 

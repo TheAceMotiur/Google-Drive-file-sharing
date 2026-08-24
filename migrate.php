@@ -18,7 +18,7 @@ if (php_sapi_name() !== 'cli') {
     header('Content-Type: text/plain; charset=utf-8');
 }
 
-echo "=== OneNetly Database Migration ===\n\n";
+echo "=== FreeNetly Database Migration ===\n\n";
 
 // ── Check database connection ─────────────────────────────────────────────────
 
