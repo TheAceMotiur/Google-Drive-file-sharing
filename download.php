@@ -190,7 +190,7 @@ require_once __DIR__ . '/includes/header.php';
 
         <!-- Download button -->
         <a
-          href="https://base64-encoder.com/go/<?= $downloadLink ?>"
+          href="<?= $downloadLink ?>"
           class="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 active:scale-95 text-white font-bold text-lg transition-all duration-150 shadow-lg shadow-blue-900/40"
         >
           ⬇️ Download File
